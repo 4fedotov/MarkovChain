@@ -43,7 +43,7 @@ public:
             //cout << "push token \"" << token << "\"" << endl;
             m_accum.push_back(token);
             
-            if(m_accum.size() == (m_chain.getN() + 1))
+            if(m_accum.size() == (size_t)(m_chain.getN() + 1))
             {
                 string key_string;
                 stringstream ss;
