@@ -93,7 +93,7 @@ void learn(const vector<string> &urls, unsigned short chain_order)
     
     for(string url: urls)
     {
-        FILE *pipe = popen((string("curl -s ") + url).c_str(), "r");
+        FILE *pipe = popen((string("curl -s -L ") + url).c_str(), "r");
         if (pipe == NULL)
         {
             throw runtime_error("Couldn't open pipe");
