@@ -14,14 +14,14 @@
 class Utils
 {
 public:
-    static void toLowerEachLang(string &s)
+    static void toLowerEachLang(std::string &s)
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << icu::UnicodeString(s.c_str()).toLower();
         s = ss.str();
     }
     
-    static string preprocess(string s)
+    static std::string preprocess(std::string s)
     {
         s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
         s.erase(std::remove_if(s.begin(), s.end(), ::ispunct), s.end());

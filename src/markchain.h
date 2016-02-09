@@ -49,7 +49,7 @@ public:
         auto it = m_chain.find(key);
         if(it != m_chain.end())
         {
-            const std::vector<string> &nextwords = it->second;
+            const std::vector<std::string> &nextwords = it->second;
             result = nextwords[rand() % nextwords.size()];
         }
         return result;
@@ -92,7 +92,7 @@ public:
             m_n = n;
         } catch (...)
         {
-            throw runtime_error("Chain file cannot be serialized");
+            throw std::runtime_error("Chain file cannot be serialized");
         }
     }
     
