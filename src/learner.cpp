@@ -117,17 +117,6 @@ int main()
     //url1
     //url2
     //...
-/*
-    string s;
-    cin >> s;
-    
-    s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
-    s.erase(std::remove_if(s.begin(), s.end(), ::ispunct), s.end());
-
-    
-    cout << icu::UnicodeString(s.c_str()).toLower() << endl;
-    
-    return 0;*/
     
     unsigned short chain_order = 0;
     cin >> chain_order;
