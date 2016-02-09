@@ -8,7 +8,6 @@
 #include <queue>
 #include <unordered_map>
 #include <sstream>
-#include <codecvt>
 
 #include "markchain.h"
 #include "utils.h"
