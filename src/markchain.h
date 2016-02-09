@@ -94,7 +94,7 @@ public:
             }
             std::swap(chain, m_chain);
             m_n = n;
-        } catch (const std::runtime_error &exc)
+        } catch (const std::exception &exc)
         {
             throw std::runtime_error(std::string("Chain file cannot be serialized: ") + exc.what());
         }
