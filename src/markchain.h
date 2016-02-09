@@ -8,7 +8,6 @@
 #include <unordered_map>
 #include <sstream>
 
-using namespace std;
 
 class RandomInititalizer
 {
@@ -36,60 +35,60 @@ public:
         return m_n;
     }
     
-    void add(const string &key, const string &word)
+    void add(const std::string &key, const std::string &word)
     {
         m_chain[key].push_back(word);
     }
     
-    string getOneRandom(const string &key) const
+    std::string getOneRandom(const std::string &key) const
     {
         static RandomInititalizer ri;
         
-        string result;
+        std::string result;
         
         auto it = m_chain.find(key);
         if(it != m_chain.end())
         {
-            const vector<string> &nextwords = it->second;
+            const std::vector<string> &nextwords = it->second;
             result = nextwords[rand() % nextwords.size()];
         }
         return result;
     }
     
-    ostream &serialize(ostream &sout) const
+    std::ostream &serialize(std::ostream &sout) const
     {
-        sout << m_n << endl;
+        sout << m_n << std::endl;
         for(auto p: m_chain)
         {
             sout << p.first;
-            for(string s: p.second)
+            for(std::string s: p.second)
             {
                 sout << " " << s;
             }
-            sout << endl;
+            sout << std::endl;
         }
         
         return sout;
     }
     
-    void deserialize(istream &sin)
+    void deserialize(std::istream &sin)
     {
         try
         {
-            unordered_map<string, vector<string>> chain;
-            string line;
+            std::unordered_map<std::string, std::vector<std::string>> chain;
+            std::string line;
             std::getline(sin, line);
-            int n = stoi(line);
+            int n = std::stoi(line);
             while(std::getline(sin, line))
             {
-                stringstream ss(line);
-                vector<string> tokens;
-                copy(istream_iterator<string>(ss),
-                     istream_iterator<string>(),
-                     back_inserter(tokens));
-                chain[tokens[0]] = vector<string>(tokens.begin() + 1, tokens.end());
+                std::stringstream ss(line);
+                std::vector<std::string> tokens;
+                std::copy(std::istream_iterator<std::string>(ss),
+                     std::istream_iterator<std::string>(),
+                     std::back_inserter(tokens));
+                chain[tokens[0]] = std::vector<std::string>(tokens.begin() + 1, tokens.end());
             }
-            swap(chain, m_chain);
+            std::swap(chain, m_chain);
             m_n = n;
         } catch (...)
         {
@@ -101,12 +100,12 @@ public:
     {
         for(auto it = m_chain.begin(); it != m_chain.end(); ++it)
         {
-            cout << "[" + it->first << "]: {";
-            for(string s: it->second)
+            std::cout << "[" + it->first << "]: {";
+            for(std::string s: it->second)
             {
-                cout << s << " ";
+                std::cout << s << " ";
             }
-            cout << "}" << endl;
+            std::cout << "}" << std::endl;
         }
     }
 
@@ -114,7 +113,7 @@ public:
 private:
     
     unsigned short m_n;
-    unordered_map<string, vector<string>> m_chain;
+    std::unordered_map<std::string, std::vector<std::string>> m_chain;
 };
 
 
