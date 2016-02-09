@@ -23,13 +23,9 @@ public:
     Learner(unsigned short n)
     :m_chain(n)
     {
-        if(n == 0)
+        if( !(n >= 1 && n <= MarkovChain::maxChainOrder()) )
         {
-            throw runtime_error("Chain order can not be zero");
-        }
-        if(n > MaxChainOrder)
-        {
-            throw runtime_error("Chain order should be not more than " + to_string(MaxChainOrder));
+            throw runtime_error("Chain order should be in range [1.." + to_string(MarkovChain::maxChainOrder()) + "]");
         }
     }
     
@@ -77,9 +73,7 @@ private:
     string m_buffer;
     deque<string> m_accum;
 
-    MarkovChain m_chain;
-    
-    const unsigned short MaxChainOrder = 100;
+    MarkovChain m_chain;    
 };
 
 void learn(const vector<string> &urls, unsigned short chain_order)
@@ -103,7 +97,7 @@ void learn(const vector<string> &urls, unsigned short chain_order)
         {
             l.accumulate(Utils::preprocess(output));
         }
-        pclose(pipe);
+        pclose(pipe); // ? todo pipe closer (RAII) 
     }
 
     l.store(cout);

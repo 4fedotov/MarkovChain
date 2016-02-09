@@ -78,7 +78,11 @@ public:
             std::unordered_map<std::string, std::vector<std::string>> chain;
             std::string line;
             std::getline(sin, line);
-            int n = std::stoi(line);
+            unsigned short n = static_cast<unsigned short>(std::stoi(line));
+            if( !(n >= 1 && n <= maxChainOrder()) )
+            {
+        	throw std::runtime_error("Chain order should be in range [1.." + std::to_string(maxChainOrder()) + "]");
+            }
             while(std::getline(sin, line))
             {
                 std::stringstream ss(line);
@@ -90,9 +94,9 @@ public:
             }
             std::swap(chain, m_chain);
             m_n = n;
-        } catch (...)
+        } catch (const std::runtime_error &exc)
         {
-            throw std::runtime_error("Chain file cannot be serialized");
+            throw std::runtime_error(std::string("Chain file cannot be serialized: ") + exc.what());
         }
     }
     
@@ -109,11 +113,17 @@ public:
         }
     }
 
+    static unsigned short maxChainOrder()
+    {
+	return MaxChainOrder;
+    }
     
 private:
     
     unsigned short m_n;
     std::unordered_map<std::string, std::vector<std::string>> m_chain;
+    
+    static const unsigned short MaxChainOrder = 100;
 };
 
 
