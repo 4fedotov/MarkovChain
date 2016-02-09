@@ -40,6 +40,7 @@ set ( SOURCES_GENERATOR
 
 set ( LIBRARIES_
     ${ICU_LIB}
+    dl
     )
 
 add_executable ( learner ${HEADERS_} ${SOURCES_LEARNER} )
