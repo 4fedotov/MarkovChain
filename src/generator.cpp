@@ -62,7 +62,7 @@ public:
 
 void help()
 {
-    cout << "Usage: <app> start_words_filename chain_filename need_words" << endl;
+    cerr << "Usage: <app> start_words_filename chain_filename need_words" << endl;
 }
 
 int main(int argc, char *argv[])
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     }
     catch(const exception &exc)
     {
-        cout << "Words number couldn't be parsed: " << exc.what() << endl;
+        cerr << "Words number couldn't be parsed: " << exc.what() << endl;
         return -1;
     }
     
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     }
     catch(const runtime_error &exc)
     {
-        cout << "Chain file couldn't be opened: " << exc.what() <<endl;
+        cerr << "Chain file couldn't be opened: " << exc.what() <<endl;
         return -1;
     }
     
@@ -108,13 +108,13 @@ int main(int argc, char *argv[])
             chain.deserialize(fchain);
         } catch (const runtime_error &exc)
         {
-            cout << exc.what() <<endl;
+            cerr << exc.what() <<endl;
             return -1;
         }
     }
     else
     {
-        cout << "Chain file cannot be opened" << endl;
+        cerr << "Chain file cannot be opened" << endl;
         return -1;
     }
     fchain.close();
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     }
     catch(const runtime_error &exc)
     {
-        cout << "Start words file cannot be opened" << exc.what() <<endl;
+        cerr << "Start words file cannot be opened" << exc.what() <<endl;
         return -1;
     }
 
@@ -148,13 +148,13 @@ int main(int argc, char *argv[])
         }
         if(start_words.empty())
         {
-            cout << "No start words were read" << endl;
+            cerr << "No start words were read" << endl;
             return -1;
         }
     }
     else
     {
-        cout << "Start words file cannot be opened" << endl;
+        cerr << "Start words file cannot be opened" << endl;
         return -1;
     }
     fstartwords.close();
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
     }
     catch(const runtime_error &exc)
     {
-        cout << exc.what() << endl;
+        cerr << exc.what() << endl;
         return -1;
     }
 
