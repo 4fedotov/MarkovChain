@@ -1,12 +1,12 @@
 #ifndef _MARK_CHAIN_
 #define _MARK_CHAIN_
 
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <queue>
-#include <unordered_map>
 #include <sstream>
+#include <iostream>
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
 
 
 class RandomInititalizer
@@ -18,21 +18,20 @@ public:
     }
 };
 
-//key is a string with n words separated with comma: "word,word,word..."
+//key is a string with n (chain order) words separated with comma: "word,word,word..."
 class MarkovChain
 {
 public:
-    MarkovChain()
-    :MarkovChain(1)
+    
+    typedef unsigned short ChainOrderType;
+    
+    explicit MarkovChain(ChainOrderType chainOrder = 1)
+        :m_order(chainOrder)
     {}
     
-    MarkovChain(unsigned short n)
-    :m_n(n)
-    {}
-    
-    unsigned short getN() const
+    ChainOrderType getN() const
     {
-        return m_n;
+        return m_order;
     }
     
     void add(const std::string &key, const std::string &word)
@@ -57,7 +56,7 @@ public:
     
     std::ostream &serialize(std::ostream &sout) const
     {
-        sout << m_n << std::endl;
+        sout << m_order << std::endl;
         for(auto p: m_chain)
         {
             sout << p.first;
@@ -77,12 +76,24 @@ public:
         {
             std::unordered_map<std::string, std::vector<std::string>> chain;
             std::string line;
+            
             std::getline(sin, line);
-            unsigned short n = static_cast<unsigned short>(std::stoi(line));
-            if( !(n >= 1 && n <= maxChainOrder()) )
+            
+            ChainOrderType chainOrder = -1;
+            try
             {
-        	throw std::runtime_error("Chain order should be in range [1.." + std::to_string(maxChainOrder()) + "]");
+                chainOrder = static_cast<unsigned short>(std::stoi(line));
             }
+            catch(...)
+            {
+                throw std::runtime_error("Chain order should be a number in range [1.." + std::to_string(maxChainOrder()) + "]");
+            }
+            
+            if( !(chainOrder >= 1 && chainOrder <= maxChainOrder()) )
+            {
+                throw std::runtime_error("Chain order should be a number in range [1.." + std::to_string(maxChainOrder()) + "]");
+            }
+            
             while(std::getline(sin, line))
             {
                 std::stringstream ss(line);
@@ -92,38 +103,28 @@ public:
                      std::back_inserter(tokens));
                 chain[tokens[0]] = std::vector<std::string>(tokens.begin() + 1, tokens.end());
             }
+            
             std::swap(chain, m_chain);
-            m_n = n;
+            m_order = chainOrder;
+            
         } catch (const std::exception &exc)
         {
-            throw std::runtime_error(std::string("Chain file cannot be serialized: ") + exc.what());
-        }
-    }
-    
-    void printchain()
-    {
-        for(auto it = m_chain.begin(); it != m_chain.end(); ++it)
-        {
-            std::cout << "[" + it->first << "]: {";
-            for(std::string s: it->second)
-            {
-                std::cout << s << " ";
-            }
-            std::cout << "}" << std::endl;
+            throw std::runtime_error(std::string("Chain cannot be deserialized: ") + exc.what());
         }
     }
 
-    static unsigned short maxChainOrder()
+    static ChainOrderType maxChainOrder()
     {
-	return MaxChainOrder;
+        return MaxChainOrder;
     }
     
 private:
     
-    unsigned short m_n;
+    ChainOrderType m_order;
+    
     std::unordered_map<std::string, std::vector<std::string>> m_chain;
     
-    static const unsigned short MaxChainOrder = 100;
+    static const ChainOrderType MaxChainOrder = 100;
 };
 
 
